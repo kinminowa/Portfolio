@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quinjoa Rey — Web Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent1:#7c3aed;--accent2:#06b6d4;--glass:rgba(255,255,255,0.04);font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #071226 100%);color:#e6eef6;max-width: 100%;overflow-x: hidden;}
+    a{color:inherit;text-decoration:none}
+    .nav{position:fixed;left:0;right:0;top:18px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;z-index:40;margin-right: 30px;}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:800;color:white}
+    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
+    .btn-ghost{border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;font-weight:600}
+    .hambtn{display:none;background:transparent;border:0;color:#cfe8ff;font-size:20px}
+    .hero{min-height:88vh;display:grid;align-items:center;padding:120px 24px 32px;max-width:1100px;margin:0 auto}
+    .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
+    .intro h1{font-size:40px;margin:0 0 12px;line-height:1.02}
+    .lead{color:var(--muted);margin:0 0 18px}
+    .cta{display:flex;gap:12px}
+    .skills-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .pill{background:var(--glass);padding:8px 12px;border-radius:999px;font-weight:600;font-size:13px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .preview{height:420px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#071226 0%, #072338 100%);display:flex;flex-direction:column}
+    .preview .top{padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+    .browser-dots{display:flex;gap:6px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.red{background:#ff6b6b}
+    .dot.yellow{background:#ffd36b}
+    .dot.green{background:#7cd389}
+    .preview .body{padding:18px;flex:1;display:flex;flex-direction:column;gap:8px}
+    section{max-width:1100px;margin:40px auto;padding:0 24px}
+    .section-title{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .section-title h2{margin:0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .project{background:var(--card);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .project h3{margin:0 0 8px}
+    .techs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .contact{display:grid;grid-template-columns:1fr 320px;gap:20px}
+    form{display:flex;flex-direction:column;gap:12px}
+    input,textarea{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:8px;color:inherit}
+    .submit{background:linear-gradient(90deg,var(--accent1),var(--accent2));border:0;padding:12px;border-radius:10px;font-weight:700;color:#071226}
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr;} .grid-3{grid-template-columns:repeat(2,1fr)} .contact{grid-template-columns:1fr} .hambtn{display:block} nav ul{display:none}}
+    @media (max-width:560px){.grid-3{grid-template-columns:1fr}}
+    .fade-up{transform:translateY(12px);opacity:0;transition:all 600ms cubic-bezier(.2,.9,.3,1)}
+    .reveal{transform:none;opacity:1}
+    .hover-lift{transition:transform .22s ease, box-shadow .22s ease}
+    .hover-lift:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(2,6,23,0.6)}
+    .muted{color:var(--muted)}
+
+    /* profile image */
+    .profile-wrap{display:flex;align-items:center;gap:14px}
+    .profile-pic{width:78px;height:78px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.06);box-shadow:0 8px 20px rgba(2,6,23,0.6)}
+
+    /* preview selector */
+    .preview-main{flex:1;display:flex;flex-direction:column;margin-top: 20px;}
+    .preview-images{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .preview-thumb{height:120px;border-radius:8px;overflow:hidden;background:#0b1220;display:grid;place-items:center}
+    .preview-thumb img{width:100%;height:100%;object-fit:cover}
+    .preview-switch{display:flex;gap:8px;margin-top:12px}
+    .preview-switch button{background:transparent;border:1px solid rgba(211, 198, 198, 0.06);padding:8px 10px;border-radius:8px;cursor:pointer;color:#f0ede8;}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);z-index:200}
+    .modal.open{display:flex}
+    .modal-card{width:92%;max-width:920px;background:#071226;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04)}
+    .modal-grid{display:grid;grid-template-columns:1fr 320px;gap:14px}
+    .modal-img{width:100%;height:320px;border-radius:8px;object-fit:cover;background:#081226}
+    .close-btn{background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer}
+
+    /* skills animated bars */
+    .skill{display:flex;flex-direction:column;gap:8px}
+    .bar{height:12px;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden}
+    .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));transition:width 900ms cubic-bezier(.2,.9,.3,1)}
+
+    /* experience logos */
+    .company{display:flex;gap:12px;align-items:center}
+    .company img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.02);padding:6px}
+
+  /* Center cards and titles on mobile */
+@media (max-width: 900px) {
+  /* make hero stack centered */
+  .hero{padding:80px 12px 32px !important;} 
+  .hero-grid{grid-template-columns:1fr !important;justify-items:center !important;} 
+  .intro{text-align:center !important;width:100%;} 
+  .profile-wrap{justify-content:center !important;}
+
+  /* preview card centered */
+  .card.preview,.preview-main,.preview{width:100% !important;max-width:720px;margin:0 auto !important;}
+
+  /* section spacing */
+  section{padding-left:12px !important;padding-right:12px !important;}
+
+  /* section titles centered */
+  .section-title{justify-content:center !important;text-align:center !important;}
+
+  /* grid -> single column centered items */
+  .grid-3{grid-template-columns:1fr !important;justify-items:center !important;gap:16px !important;}
+
+  /* center each card/project and limit width so it visually centers */
+  .project,.card,.project .techs,.company{width:100% !important;max-width:720px !important;margin:0 auto !important;box-sizing:border-box !important;}
+
+  /* Contact column becomes stacked and centered */
+  .contact{grid-template-columns:1fr !important;gap:12px !important;} 
+  form.card{max-width:720px !important;margin:0 auto !important;}
+
+  /* Make modal grid responsive too */
+  .modal-grid{grid-template-columns:1fr !important;padding:12px !important;}
+}
+
+/* Extra small phones */
+@media (max-width: 420px) {
+  .profile-pic{width:72px !important;height:72px !important;} 
+  .intro h1{font-size:28px !important;} 
+  .project,.card{max-width:92% !important;} 
+  section{margin:24px auto !important;padding-left:12px !important;padding-right:12px !important;} 
+  .preview-main{margin-top:16px !important;} 
+  .preview-images{gap:6px !important;grid-template-columns:1fr 1fr !important;}
+}
+
+/* experience grid */
+.experience-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+
+/* mobile experience grid */
+@media (max-width: 900px) {
+  .experience-grid{grid-template-columns:1fr;text-align:center;} 
+  .company{flex-direction:column;align-items:center;} 
+  .company img{margin-bottom:8px;}
+}
+
+/* experience logos */
+.company{display:flex;gap:12px;align-items:center;} 
+.company img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.02);padding:6px;}
+
+
+
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">
+      <div class="logo">QR</div>
+      <div class="muted" style="font-weight:700">Quinjoa Rey</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="hambtn" id="menuBtn" aria-label="menu">☰</button>
+  </header>
+
+  <main>
+    <section class="hero" id="about">
+      <div class="hero-grid">
+        <div class="intro">
+          <div class="profile-wrap fade-up">
+            <!-- Replace the src with your profile image path or URL -->
+            <img id="profilePic" class="profile-pic" src="profile.jpg" alt="Quinjoa Rey">
+            <div>
+              <div style="font-size:13px;">👋 Hi, I’m</div>
+              <h1>Quinjoa Rey — Web Developer</h1>
+              <p class="lead">I build responsive and user-friendly websites using <strong>HTML, CSS, JavaScript, PHP</strong>, and <strong>SQL</strong>. My background in customer service helps me craft thoughtful, practical solutions for real users.</p>
+              <div class="skills-row">
+                <div class="pill">HTML</div>
+                <div class="pill">CSS</div>
+                <div class="pill">JavaScript</div>
+                <div class="pill">PHP</div>
+                <div class="pill">SQL</div>
+              </div>
+              <div class="cta" style="margin-top:14px"><a class="btn-ghost" href="#projects">View Projects</a> <a class="btn-ghost" href="#contact">Contact Me</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card preview fade-up hover-lift">
+          <div class="top"><div class="browser-dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="muted">Preview</div></div>
+          <div class="body">
+            <div class="preview-main">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <strong id="previewTitle">Menu & Cart</strong>
+                  <div class="muted" style="font-size:13px">Full-stack demo (PHP + MySQL)</div>
+                </div>
+                <div style="font-size:12px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:8px">Live</div>
+              </div>
+
+              <div class="preview-images" id="previewImages">
+                <!-- thumbnails which switch the main preview -->
+                <div class="preview-thumb"><img src="1st-project.png" alt="menu1" data-large="https://via.placeholder.com/800x500?text=Menu+1"></div>
+                <div class="preview-thumb"><img src="2nd project.png" alt="cart1" data-large="https://via.placeholder.com/800x500?text=Cart+1"></div>
+              </div>
+
+              <div class="preview-switch">
+                <button data-title="Menu & Cart" data-desc="Full-stack demo (PHP + MySQL)" data-images='[{"thumb":"https://via.placeholder.com/400x300?text=Menu+1","large":"https://via.placeholder.com/800x500?text=Menu+1"},{"thumb":"https://via.placeholder.com/400x300?text=Cart+1","large":"https://via.placeholder.com/800x500?text=Cart+1"}]' class="selectPreview">Menu</button>
+                <button data-title="Nail Gloss" data-desc="Front-end booking and chat UI" data-images='[{"thumb":"https://via.placeholder.com/400x300?text=Nail+1","large":"https://via.placeholder.com/800x500?text=Nail+1"},{"thumb":"https://via.placeholder.com/400x300?text=Nail+2","large":"https://via.placeholder.com/800x500?text=Nail+2"}]' class="selectPreview">Nail Site</button>
+                <button data-title="Coming Soon" data-desc="New project preview" data-images='[{"thumb":"https://via.placeholder.com/400x300?text=Soon","large":"https://via.placeholder.com/800x500?text=Soon"}]' class="selectPreview">More</button>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+                <div class="muted" id="previewTech">Tech: HTML • CSS • JS • PHP • MySQL</div>
+                <div style="font-size:13px">⭐ 4.6</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="projects">
+  <div class="section-title">
+    <h2>Projects</h2>
+    <div class="muted">Selected work that demonstrates my front-end and back-end skills</div>
+  </div>
+
+  <div class="grid-3" id="projectsGrid">
+    <!-- Project 1 -->
+    <article class="project fade-up hover-lift"
+      data-project='{
+        "title":"Menu and Cart Functionality",
+        "tech":"HTML • CSS • JavaScript • PHP • MySQL",
+        "image":"1st-project.png",
+        "desc":"A food-ordering website with a working cart system and backend order processing. Backend: PHP + MySQL for order handling, prepared statements, and simple session-based cart.",
+        "live":"https://kinminowa.github.io/Menu-and-Cart-Functionality-Website/",
+        "code":"https://github.com/kinminowa/Menu-and-Cart-Functionality-Website"
+      }'>
+      <img src="1st-project.png" alt="menu" style="width:100%;border-radius:8px;margin-bottom:10px;object-fit:cover">
+      <h3>Menu and Cart Functionality</h3>
+      <p class="muted">A food-ordering website with a working cart system, connected to PHP + MySQL backend for order processing.</p>
+      <div class="techs muted">HTML • CSS • JavaScript • PHP • MySQL</div>
+      <div style="margin-top:12px;color:var(--accent2)">
+        <a href="https://kinminowa.github.io/Menu-and-Cart-Functionality-Website/" target="_blank">Live demo</a> • 
+        <a href="https://github.com/kinminowa/Menu-and-Cart-Functionality-Website">Code</a>
+      </div>
+    </article>
+
+    <!-- Project 2 -->
+<article class="project fade-up hover-lift"
+  data-project='{
+    "title":"Nail Gloss and Glass",
+    "tech":"HTML • CSS • JavaScript",
+    "image":"2nd%20project.png",
+    "desc":"A beauty services website with booking form and front-end live chat interface. UI-only booking + chat ready for backend integration.",
+    "live":"https://kinminowa.github.io/Nail-Gloss-and-Glass-Website/",
+    "code":"https://github.com/kinminowa/Nail-Gloss-and-Glass-Website"
+  }'>
+  <img src="2nd%20project.png" alt="nail" style="width:100%;border-radius:8px;margin-bottom:10px;object-fit:cover">
+  <h3>Nail Gloss and Glass</h3>
+  <p class="muted">A beauty services website with a booking form and front-end live chat interface. Fully responsive and visually polished.</p>
+  <div class="techs muted">HTML • CSS • JavaScript</div>
+  <div style="margin-top:12px;color:var(--accent2)">
+    <a href="https://kinminowa.github.io/Nail-Gloss-and-Glass-Website/" target="_blank">Live demo</a> • 
+    <a href="https://github.com/kinminowa/Nail-Gloss-and-Glass-Website">Code</a>
+  </div>
+</article>
+
+
+    <!-- Project 3 -->
+    <article class="project fade-up hover-lift"
+      data-project='{
+        "title":"Coming Soon",
+        "tech":"HTML • CSS • JavaScript • PHP",
+        "image":"coming-soon.jpg",
+        "desc":"Working on a web app that demonstrates more advanced back-end features and polished UI/UX for bookings and transactions.",
+        "live":"#",
+        "code":"#"
+      }'>
+      <img src="coming-soon.jpg" alt="soon" style="width:100%;border-radius:8px;margin-bottom:10px;object-fit:cover">
+      <h3>Coming Soon — New Project</h3>
+      <p class="muted">Working on a web app that demonstrates more advanced back-end features and polished UI/UX for bookings and transactions.</p>
+      <div class="techs muted">HTML • CSS • JavaScript • PHP • SQL</div>
+      <div style="margin-top:12px;color:var(--accent2)">
+        <a href="#">Details</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+    <section id="skills">
+      <div class="section-title"><h2>Skills</h2><div class="muted">Tools and abilities I use to build projects</div></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap">
+        <div class="card fade-up" style="min-width:260px;flex:1">
+          <h3>Frontend</h3>
+          <p class="muted">HTML5 • CSS3 • Responsive Design • JavaScript (Vanilla)</p>
+          <div style="margin-top:12px">
+            <div class="skill"><div class="muted">HTML</div><div class="bar"><i data-width="95%"></i></div></div>
+            <div class="skill"><div class="muted">CSS</div><div class="bar"><i data-width="92%"></i></div></div>
+            <div class="skill"><div class="muted">JavaScript</div><div class="bar"><i data-width="85%"></i></div></div>
+          </div>
+        </div>
+        <div class="card fade-up" style="min-width:260px;flex:1">
+          <h3>Backend</h3>
+          <p class="muted">PHP • MySQL • Basic REST endpoints • Form handling</p>
+          <div style="margin-top:12px">
+            <div class="skill"><div class="muted">PHP</div><div class="bar"><i data-width="78%"></i></div></div>
+            <div class="skill"><div class="muted">SQL (MySQL)</div><div class="bar"><i data-width="80%"></i></div></div>
+          </div>
+        </div>
+        <div class="card fade-up" style="min-width:200px">
+          <h3>Other</h3>
+          <p class="muted">Git/GitHub • Problem Solving • Communication • UI/UX basics</p>
+        </div>
+      </div>
+    </section>
+
+<section id="experience">
+  <div class="section-title" style="text-align:center;">
+    <h2>Experience</h2>
+    <div class="muted">Customer support background that strengthens my product decisions</div>
+  </div>
+  <div class="experience-grid">
+    <div class="card fade-up">
+      <div class="company">
+        <img src="tp.jpg" alt="concentrix">
+        <div>
+          <h3>Advisor I — Concentrix</h3>
+          <div class="muted">Apr 2024 – Aug 2025</div>
+          <p class="muted">Multi-channel financial support, dispute resolution, and customer communication—skills I apply to building user-focused interfaces.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card fade-up">
+      <div class="company">
+        <img src="cnx.png" alt="teleperformance">
+        <div>
+          <h3>CSR — Teleperformance</h3>
+          <div class="muted">Aug 2023 – Mar 2024</div>
+          <p class="muted">Healthcare support with emphasis on empathy, accuracy, and confidentiality.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section id="contact">
+      <div class="section-title"><h2>Contact</h2><div class="muted">Let's work together — I’m available for freelance and part-time roles</div></div>
+      <div class="contact">
+        <div class="card fade-up">
+          <h3>Get in touch</h3>
+          <p class="muted">Email me at <a href="mailto:quinjoarey@gmail.com">quinjoarey@gmail.com</a> or call <span class="muted">(+63) 09633375807</span></p>
+          <div style="margin-top:12px"><strong>Location</strong><div class="muted">Vitas Street, Tondo Manila, Manila City</div></div>
+          <div style="margin-top:14px"><strong>Available For</strong><div class="muted">Freelance • Part-time • Front-end / Full-stack small projects</div></div>
+        </div>
+
+        <!-- Contact form: uses EmailJS if configured. Instructions in comments below -->
+ <form class="card fade-up" id="contactForm">
+  <label class="muted">Your name</label>
+  <input type="text" id="name" name="from_name" placeholder="e.g. Maria Santos" required />
+
+  <label class="muted">Email</label>
+  <input type="email" id="email" name="reply_to" placeholder="your@email.com" required />
+
+  <label class="muted">Message</label>
+  <textarea id="message" name="message" rows="5" placeholder="Describe your project or message" required></textarea>
+
+  <button class="submit" type="submit">Send message</button>
+  <div id="formMsg" class="muted" style="font-size:13px;margin-top:8px"></div>
+</form>
+      </div>
+    </section>
+
+    <footer style="padding:30px 24px;text-align:center;color:var(--muted)">© 2025 Quinjoa Rey • Built with HTML • CSS • JavaScript • PHP • SQL</footer>
+  </main>
+
+  <!-- Modal for project details -->
+<div id="modal" class="modal" role="dialog" aria-hidden="true">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <strong id="modalTitle">Project</strong>
+      <button class="close-btn" id="closeModal">Close ✕</button>
+    </div>
+    <div class="modal-grid">
+      <div>
+        <img id="modalImg" class="modal-img" src="https://via.placeholder.com/800x500?text=Project" alt="project">
+      </div>
+      <div>
+        <div id="modalDesc" class="muted">Project description</div>
+        <div style="margin-top:12px">
+          <strong>Technologies</strong>
+          <div id="modalTech" class="muted" style="margin-top:6px"></div>
+        </div>
+        <div style="margin-top:16px">
+          <a id="modalLive" href="#" target="_blank">View live demo</a> • 
+          <a id="modalCode" href="#" target="_blank">View code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("OrPMDbOB91fJmn423"); // Your Public Key
+  })();
+</script>
+
+  <script>
+    // Mobile nav toggle
+    const menuBtn = document.getElementById('menuBtn');
+    menuBtn.addEventListener('click', ()=>{
+      const nav = document.querySelector('nav ul');
+      if(nav.style.display === 'flex') nav.style.display = 'none'; else nav.style.display = 'flex';
+    });
+
+    // Intersection reveal
+    const targets = document.querySelectorAll('.fade-up');
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('reveal'); obs.unobserve(e.target); }
+      })
+    },{threshold:0.12});
+    targets.forEach(t=>obs.observe(t));
+
+    // Preview switcher
+    document.querySelectorAll('.selectPreview').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const title = btn.dataset.title; const desc = btn.dataset.desc; const images = JSON.parse(btn.dataset.images);
+        document.getElementById('previewTitle').textContent = title; document.getElementById('previewTech').textContent = 'Tech: ' + desc;
+        // update main image and thumbnails
+        const main = document.getElementById('previewMainImg'); main.src = images[0].large;
+        const thumbs = document.querySelectorAll('#previewImages .preview-thumb img');
+        thumbs.forEach((el,i)=>{ if(images[i]){ el.src = images[i].thumb; el.dataset.large = images[i].large } else { el.src = 'https://via.placeholder.com/400x300?text=Image' }});
+      });
+    });
+
+    // thumbnail click to change main
+    document.getElementById('previewImages').addEventListener('click', (e)=>{
+      const img = e.target.closest('img'); if(img) document.getElementById('previewMainImg').src = img.dataset.large || img.src;
+    });
+
+    // project modal handlers
+document.querySelectorAll('.project').forEach(card => {
+  card.addEventListener('click', () => {
+    const data = JSON.parse(card.dataset.project);
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalImg').src = data.image;  // ← This line updates the modal image
+    document.getElementById('modalDesc').textContent = data.desc;
+    document.getElementById('modalTech').textContent = data.tech;
+    document.getElementById('modalLive').href = data.live || '#';
+    document.getElementById('modalCode').href = data.code || '#';
+    document.getElementById('modal').classList.add('open');
+    document.getElementById('modal').setAttribute('aria-hidden', 'false');
+  });
+});
+
+    document.getElementById('closeModal').addEventListener('click', ()=>{ document.getElementById('modal').classList.remove('open'); document.getElementById('modal').setAttribute('aria-hidden','true'); });
+    document.getElementById('modal').addEventListener('click',(e)=>{ if(e.target === document.getElementById('modal')){ document.getElementById('modal').classList.remove('open'); document.getElementById('modal').setAttribute('aria-hidden','true'); }});
+
+    // animate skill bars on reveal
+    const skillBars = document.querySelectorAll('.bar i');
+    const sbObs = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ const w = e.target.dataset.width; e.target.style.width = w; sbObs.unobserve(e.target); } }); },{threshold:0.2});
+    skillBars.forEach(b=>sbObs.observe(b));
+
+        // Contact form submit handler
+    const form = document.getElementById('contactForm');
+    const formMsg = document.getElementById('formMsg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      formMsg.textContent = 'Sending...';
+
+      emailjs.sendForm('service_oo5t3x4', 'template_c0hvync', '#contactForm')
+        .then(function() {
+          formMsg.textContent = '✅ Message sent successfully!';
+          form.reset();
+        }, function(error) {
+          formMsg.textContent = '❌ Failed to send message. Please try again.';
+          console.error('EmailJS Error:', error);
+        });
+    });
+
+
+
+  </script>
+
+  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("OrPMDbOB91fJmn423"); // Your Public Key
+  })();
+</script>
+
+</body>
+</html>
